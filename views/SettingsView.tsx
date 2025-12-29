@@ -100,6 +100,15 @@ const SettingsView: React.FC<SettingsViewProps> = ({ settings, onUpdateSettings 
     });
   };
 
+  const handleToggle = (key: 'enableTickSound' | 'enableSessionEndSound') => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      onUpdateSettings({
+        ...settings,
+        [key]: event.target.checked,
+      });
+    };
+  };
+
   return (
     <div className="flex flex-col h-full bg-neo-offwhite p-6 overflow-y-auto">
       <div className="mb-6 text-center">
@@ -135,6 +144,28 @@ const SettingsView: React.FC<SettingsViewProps> = ({ settings, onUpdateSettings 
           max={20}
           onChange={handleChange}
         />
+
+        <div className="bg-white border-3 border-black p-4 shadow-neo space-y-3">
+          <h3 className="font-display font-bold text-sm uppercase">Sound</h3>
+          <label className="flex items-center justify-between gap-3 text-sm font-mono">
+            <span>Tick sound</span>
+            <input
+              type="checkbox"
+              checked={settings.enableTickSound}
+              onChange={handleToggle('enableTickSound')}
+              className="h-4 w-4 accent-neo-green"
+            />
+          </label>
+          <label className="flex items-center justify-between gap-3 text-sm font-mono">
+            <span>Session end sound</span>
+            <input
+              type="checkbox"
+              checked={settings.enableSessionEndSound}
+              onChange={handleToggle('enableSessionEndSound')}
+              className="h-4 w-4 accent-neo-green"
+            />
+          </label>
+        </div>
 
         <div className="bg-neo-yellow border-3 border-black p-4 text-xs font-mono mt-8">
           <p><strong>NOTE:</strong> Changes apply immediately to the timer if it is paused. If running, changes apply on reset or next session.</p>

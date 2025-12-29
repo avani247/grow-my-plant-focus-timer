@@ -46,10 +46,12 @@ export const usePomodoro = (settings: TimerSettings) => {
     setSessionCount(nextSessionCount);
 
     // Play Sound
-    if (finishedMode === TimerMode.FOCUS) {
-      playFocusEnd();
-    } else {
-      playBreakEnd();
+    if (settings.enableSessionEndSound) {
+      if (finishedMode === TimerMode.FOCUS) {
+        playFocusEnd();
+      } else {
+        playBreakEnd();
+      }
     }
   }, [mode, sessionCount, settings]);
 
@@ -64,10 +66,12 @@ export const usePomodoro = (settings: TimerSettings) => {
   const tick = useCallback(() => {
     setTimeLeft((prev) => {
       if (prev <= 0) return 0;
-      playTick();
+      if (settings.enableTickSound) {
+        playTick();
+      }
       return prev - 1;
     });
-  }, []);
+  }, [settings.enableTickSound]);
 
   // Interval Handling
   useEffect(() => {
