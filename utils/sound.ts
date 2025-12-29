@@ -17,22 +17,45 @@ export const playTick = () => {
     const ctx = getContext();
     if (!ctx) return;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const now = ctx.currentTime;
 
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    const noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.02), ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < data.length; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    }
 
-    // Subtle, mechanical tick (lower pitch than before)
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(300, ctx.currentTime); // Lower pitch 300Hz
-    
-    // Very short envelope for a "click" feel
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
 
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.05);
+    const bandpass = ctx.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.setValueAtTime(1800, now);
+    bandpass.Q.setValueAtTime(1, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.08, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+
+    const clickOsc = ctx.createOscillator();
+    clickOsc.type = 'sine';
+    clickOsc.frequency.setValueAtTime(220, now);
+
+    const clickGain = ctx.createGain();
+    clickGain.gain.setValueAtTime(0.05, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+
+    noise.connect(bandpass);
+    bandpass.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(ctx.destination);
+
+    noise.start(now);
+    noise.stop(now + 0.02);
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.03);
   } catch (e) {
     console.error("Audio playback error", e);
   }
@@ -43,30 +66,47 @@ export const playFocusEnd = () => {
     const ctx = getContext();
     if (!ctx) return;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const now = ctx.currentTime;
+    const duration = 1.2;
 
-    osc.connect(gain);
+    const carrierA = ctx.createOscillator();
+    const carrierB = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    carrierA.type = 'square';
+    carrierB.type = 'square';
+    carrierA.frequency.setValueAtTime(880, now);
+    carrierB.frequency.setValueAtTime(960, now);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2200, now);
+    filter.Q.setValueAtTime(0.7, now);
+
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.14, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(6, now);
+    lfoGain.gain.setValueAtTime(0.12, now);
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(gain.gain);
+
+    carrierA.connect(filter);
+    carrierB.connect(filter);
+    filter.connect(gain);
     gain.connect(ctx.destination);
 
-    // "Victory" / Level Up Sound - 8-bit Square Wave
-    osc.type = 'square';
-    
-    const now = ctx.currentTime;
-    
-    // Fast Ascending Arpeggio (C Major: C5 - E5 - G5 - C6)
-    osc.frequency.setValueAtTime(523.25, now);       // C5
-    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-    osc.frequency.setValueAtTime(1046.50, now + 0.3);// C6
-
-    // Volume Envelope
-    gain.gain.setValueAtTime(0.1, now);
-    gain.gain.linearRampToValueAtTime(0.1, now + 0.3);
-    gain.gain.linearRampToValueAtTime(0, now + 0.6);
-
-    osc.start(now);
-    osc.stop(now + 0.6);
+    carrierA.start(now);
+    carrierB.start(now);
+    lfo.start(now);
+    carrierA.stop(now + duration);
+    carrierB.stop(now + duration);
+    lfo.stop(now + duration);
   } catch (e) {
     console.error("Audio playback error", e);
   }
@@ -77,32 +117,47 @@ export const playBreakEnd = () => {
     const ctx = getContext();
     if (!ctx) return;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const now = ctx.currentTime;
+    const duration = 1.2;
 
-    osc.connect(gain);
+    const carrierA = ctx.createOscillator();
+    const carrierB = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    carrierA.type = 'square';
+    carrierB.type = 'square';
+    carrierA.frequency.setValueAtTime(880, now);
+    carrierB.frequency.setValueAtTime(960, now);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2200, now);
+    filter.Q.setValueAtTime(0.7, now);
+
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.14, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(6, now);
+    lfoGain.gain.setValueAtTime(0.12, now);
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(gain.gain);
+
+    carrierA.connect(filter);
+    carrierB.connect(filter);
+    filter.connect(gain);
     gain.connect(ctx.destination);
 
-    // "Back to Work" / Alert Sound - Sawtooth Wave
-    osc.type = 'sawtooth';
-    
-    const now = ctx.currentTime;
-    
-    // Double Beep (Low A3)
-    // First Beep
-    osc.frequency.setValueAtTime(220, now);
-    gain.gain.setValueAtTime(0.1, now);
-    gain.gain.linearRampToValueAtTime(0, now + 0.2);
-    
-    // Silence/Gap is naturally created by the envelope dropping to 0
-    
-    // Second Beep
-    osc.frequency.setValueAtTime(220, now + 0.3);
-    gain.gain.setValueAtTime(0.1, now + 0.3);
-    gain.gain.linearRampToValueAtTime(0, now + 0.5);
-
-    osc.start(now);
-    osc.stop(now + 0.5);
+    carrierA.start(now);
+    carrierB.start(now);
+    lfo.start(now);
+    carrierA.stop(now + duration);
+    carrierB.stop(now + duration);
+    lfo.stop(now + duration);
   } catch (e) {
     console.error("Audio playback error", e);
   }

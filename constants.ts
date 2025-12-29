@@ -5,6 +5,8 @@ export const DEFAULT_SETTINGS: TimerSettings = {
   [TimerMode.FOCUS]: 25 * 60,
   [TimerMode.SHORT_BREAK]: 5 * 60,
   [TimerMode.LONG_BREAK]: 15 * 60,
+  enableTickSound: true,
+  enableSessionEndSound: true,
 };
 
 export const TOTAL_SESSIONS_BEFORE_LONG_BREAK = 4;

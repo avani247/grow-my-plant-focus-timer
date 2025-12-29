@@ -21,6 +21,8 @@ export interface TimerSettings {
   [TimerMode.FOCUS]: number;
   [TimerMode.SHORT_BREAK]: number;
   [TimerMode.LONG_BREAK]: number;
+  enableTickSound: boolean;
+  enableSessionEndSound: boolean;
 }
 
 export enum MusicCategory {
