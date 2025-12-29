@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grow My Plant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@300;700&family=Public+Sans:wght@500;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              neo: {
+                yellow: '#FFF000',
+                pink: '#FF90E8',
+                blue: '#40E0D0', // Slightly softer turquoise
+                green: '#00FF94',
+                white: '#FFFFFF',
+                black: '#121212',
+                offwhite: '#F3F3F3',
+              }
+            },
+            fontFamily: {
+              sans: ['"Public Sans"', 'sans-serif'],
+              display: ['"Lexend Mega"', 'sans-serif'],
+            },
+            boxShadow: {
+              neo: '5px 5px 0px 0px rgba(0,0,0,1)',
+              'neo-sm': '3px 3px 0px 0px rgba(0,0,0,1)',
+              'neo-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+            },
+            borderWidth: {
+              '3': '3px',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #FFF000;
+        background-image: radial-gradient(#121212 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: #121212;
+      }
+      /* Hide scrollbar for cleaner app-like feel */
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "express": "https://esm.sh/express@^5.2.1",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "path": "https://esm.sh/path@^0.12.7",
+    "url": "https://esm.sh/url@^0.11.4",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
