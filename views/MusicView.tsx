@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MusicCategory, MusicTrack } from '../types';
+import { MusicCategory } from '../types';
 import { MUSIC_TRACKS } from '../constants';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
