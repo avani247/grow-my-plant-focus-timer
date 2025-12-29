@@ -16,7 +16,13 @@ const App: React.FC = () => {
   return (
     // Changed min-h-screen to h-dvh for mobile browser support
     // Removed p-4 on mobile, added it back on sm screens
-    <div className="h-dvh w-screen font-sans flex flex-col items-center justify-center sm:p-4 bg-neo-yellow overflow-hidden">
+    <div
+      className="h-dvh w-screen font-sans flex flex-col items-center justify-center sm:p-4 bg-neo-yellow overflow-hidden"
+      style={{
+        backgroundImage: 'radial-gradient(#121212 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }}
+    >
       
       {/* Main App Container - The "Window" */}
       {/* Changed h-[92vh] to h-full on mobile to fill screen */}
