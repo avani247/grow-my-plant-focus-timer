@@ -1,6 +1,12 @@
 import React from 'react';
 import { TimerMode } from '../types';
 import NeoButton from '../components/NeoButton';
+import waterBottlePixel from '../water-bottle-pixel.png';
+import coffeeMugPixel from '../coffee-mug-pixel.png';
+import plantSmallPixel from '../plant-1-small-pixel.png';
+import plantMediumPixel from '../plant-2-medium-pixel.png';
+import plantLargePixel from '../plant-3-large-pixel.png';
+import plantExtraLargePixel from '../plant-4-extra-large-pixel.png';
 
 interface TimerViewProps {
   mode: TimerMode;
@@ -38,89 +44,41 @@ const LeafIcon: React.FC<{ filled: boolean }> = ({ filled }) => (
 
 const PlantVisuals: React.FC<{ mode: TimerMode; sessionCount: number }> = ({ mode, sessionCount }) => {
   
-  // Common Pot Component
-  const Pot = () => (
-    <g>
-       <rect x="6" y="14" width="12" height="8" fill="#FF90E8" stroke="#121212" strokeWidth="2" />
-       <rect x="5" y="14" width="14" height="2" fill="#FF90E8" stroke="#121212" strokeWidth="2" />
-       {/* Soil */}
-       <rect x="8" y="16" width="8" height="2" fill="#121212" opacity="0.1" />
-    </g>
-  );
-
   if (mode === TimerMode.SHORT_BREAK) {
-    // Water Bottle Icon
     return (
-      <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 7 8 12C8 16 9.79 19 12 19C14.21 19 16 16 16 12C16 7 12 2 12 2Z" fill="#40E0D0" stroke="#121212" strokeWidth="2" strokeLinejoin="round"/>
-        <path d="M12 2V19" stroke="#121212" strokeWidth="1.5" opacity="0.2"/>
-        <circle cx="13.5" cy="10" r="1" fill="white" />
-        <rect x="10" y="21" width="4" height="1" fill="#121212" opacity="0.2" />
-      </svg>
+      <img
+        src={waterBottlePixel}
+        alt="Water bottle"
+        className="h-full w-full object-contain"
+      />
     );
   }
 
   if (mode === TimerMode.LONG_BREAK) {
-    // Coffee Mug Icon
     return (
-       <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-         <rect x="5" y="6" width="12" height="14" rx="1" fill="#FFF000" stroke="#121212" strokeWidth="2" />
-         <path d="M17 8H19C20.1 8 21 8.9 21 10V12C21 13.1 20.1 14 19 14H17" stroke="#121212" strokeWidth="2" fill="none"/>
-         {/* Steam */}
-         <path d="M8 3V5" stroke="#121212" strokeWidth="2" strokeLinecap="round" />
-         <path d="M11 2V5" stroke="#121212" strokeWidth="2" strokeLinecap="round" />
-         <path d="M14 3V5" stroke="#121212" strokeWidth="2" strokeLinecap="round" />
-       </svg>
+      <img
+        src={coffeeMugPixel}
+        alt="Coffee mug"
+        className="h-full w-full object-contain"
+      />
     );
   }
 
   // FOCUS MODE - Growth Stages
   const stage = Math.min(Math.max(sessionCount, 1), 4);
+  const plantStages = [
+    plantSmallPixel,
+    plantMediumPixel,
+    plantLargePixel,
+    plantExtraLargePixel,
+  ];
 
   return (
-    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <Pot />
-      
-      {stage >= 1 && (
-        // Stage 1: Sprout
-        <g>
-          <path d="M12 14V11" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M12 11L10 9" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M12 11L14 9" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-        </g>
-      )}
-
-      {stage >= 2 && (
-         // Stage 2: Taller Stem
-         <g>
-            <path d="M12 11V8" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M12 9L9 7" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-         </g>
-      )}
-
-      {stage >= 3 && (
-         // Stage 3: Bushier
-         <g>
-            <path d="M12 8V6" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M12 7L15 5" stroke="#00FF94" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="9" cy="7" r="1" fill="#00FF94" stroke="#121212" strokeWidth="1"/>
-            <circle cx="15" cy="5" r="1" fill="#00FF94" stroke="#121212" strokeWidth="1"/>
-            <circle cx="10" cy="9" r="1" fill="#00FF94" stroke="#121212" strokeWidth="1"/>
-            <circle cx="14" cy="9" r="1" fill="#00FF94" stroke="#121212" strokeWidth="1"/>
-         </g>
-      )}
-
-      {stage >= 4 && (
-         // Stage 4: Flower
-         <g>
-            <circle cx="12" cy="5" r="3" fill="#FFF000" stroke="#121212" strokeWidth="1.5" />
-            <circle cx="12" cy="5" r="1" fill="#121212" />
-            {/* Sparkles */}
-            <path d="M7 4L8 4" stroke="#121212" strokeWidth="1"/>
-            <path d="M17 6L16 6" stroke="#121212" strokeWidth="1"/>
-         </g>
-      )}
-    </svg>
+    <img
+      src={plantStages[stage - 1]}
+      alt={`Plant growth stage ${stage}`}
+      className="h-full w-full object-contain"
+    />
   );
 };
 
