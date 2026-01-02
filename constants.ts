@@ -17,17 +17,17 @@ const SOFT_BROWN_NOISE_AUDIO_URL = new URL('./audio/soft-brown-noise.mp3', impor
 export const MUSIC_TRACKS: MusicTrack[] = [
   // Category 1: Noise (Synthesized)
   { id: 'white-noise', title: 'White Noise', category: MusicCategory.NOISE, src: WHITE_NOISE_AUDIO_URL, type: 'FILE' },
-  { id: 'pink-noise', title: 'Pink Noise', category: MusicCategory.NOISE, src: 'PINK_NOISE', type: 'SYNTH' },
+  { id: 'pink-noise', title: 'Pink Noise', category: MusicCategory.NOISE, src: 'https://pixabay.com/sound-effects/low-pink-noise-434732/download/', type: 'FILE' },
   { id: 'brown-noise', title: 'Brown Noise', category: MusicCategory.NOISE, src: SOFT_BROWN_NOISE_AUDIO_URL, type: 'FILE' },
 
   // Category 2: Nature (Files - Using CDN for demo purposes)
-  { id: 'rain', title: 'Rain', category: MusicCategory.NATURE, src: 'https://cdn.pixabay.com/download/audio/2022/07/04/audio_106f859582.mp3', type: 'FILE' },
+  { id: 'rain', title: 'Rain', category: MusicCategory.NATURE, src: 'https://pixabay.com/sound-effects/gentle-rain-01-437305/download/', type: 'FILE' },
   { id: 'wind', title: 'Wind', category: MusicCategory.NATURE, src: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3', type: 'FILE' },
-  { id: 'waves', title: 'Waves', category: MusicCategory.NATURE, src: 'https://cdn.pixabay.com/download/audio/2021/08/09/audio_8ed41005eb.mp3', type: 'FILE' },
-  { id: 'forest', title: 'Forest', category: MusicCategory.NATURE, src: 'https://cdn.pixabay.com/download/audio/2021/09/06/audio_472f7e85c1.mp3', type: 'FILE' },
+  { id: 'waves', title: 'Waves', category: MusicCategory.NATURE, src: 'https://pixabay.com/sound-effects/sounds-of-waves-313367/download/', type: 'FILE' },
+  { id: 'forest', title: 'Forest', category: MusicCategory.NATURE, src: 'https://pixabay.com/sound-effects/forest-sounds-259933/download/', type: 'FILE' },
 
   // Category 3: Music (Files - Using CDN for demo purposes)
   { id: 'lofi', title: 'Lo-Fi', category: MusicCategory.MUSIC, src: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3', type: 'FILE' },
-  { id: 'classical', title: 'Piano', category: MusicCategory.MUSIC, src: 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3', type: 'FILE' },
+  { id: 'classical', title: 'Piano', category: MusicCategory.MUSIC, src: 'https://pixabay.com/music/modern-classical-soft-piano-inspiration-399920/download/', type: 'FILE' },
   { id: 'jazz', title: 'Jazz', category: MusicCategory.MUSIC, src: 'https://cdn.pixabay.com/download/audio/2022/01/12/audio_45fdf98d5b.mp3', type: 'FILE' },
 ];
