@@ -11,11 +11,14 @@ export const DEFAULT_SETTINGS: TimerSettings = {
 
 export const TOTAL_SESSIONS_BEFORE_LONG_BREAK = 4;
 
+const WHITE_NOISE_AUDIO_URL = new URL('./audio/white-noise.mp3', import.meta.url).href;
+const SOFT_BROWN_NOISE_AUDIO_URL = new URL('./audio/soft-brown-noise.mp3', import.meta.url).href;
+
 export const MUSIC_TRACKS: MusicTrack[] = [
   // Category 1: Noise (Synthesized)
-  { id: 'white-noise', title: 'White Noise', category: MusicCategory.NOISE, src: 'WHITE_NOISE', type: 'SYNTH' },
+  { id: 'white-noise', title: 'White Noise', category: MusicCategory.NOISE, src: WHITE_NOISE_AUDIO_URL, type: 'FILE' },
   { id: 'pink-noise', title: 'Pink Noise', category: MusicCategory.NOISE, src: 'PINK_NOISE', type: 'SYNTH' },
-  { id: 'brown-noise', title: 'Brown Noise', category: MusicCategory.NOISE, src: 'BROWN_NOISE', type: 'SYNTH' },
+  { id: 'brown-noise', title: 'Brown Noise', category: MusicCategory.NOISE, src: SOFT_BROWN_NOISE_AUDIO_URL, type: 'FILE' },
 
   // Category 2: Nature (Files - Using CDN for demo purposes)
   { id: 'rain', title: 'Rain', category: MusicCategory.NATURE, src: 'https://cdn.pixabay.com/download/audio/2022/07/04/audio_106f859582.mp3', type: 'FILE' },
