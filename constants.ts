@@ -11,7 +11,7 @@ export const DEFAULT_SETTINGS: TimerSettings = {
 
 export const TOTAL_SESSIONS_BEFORE_LONG_BREAK = 4;
 
-const audioUrl = (filename: string) => new URL(`./audio/${filename}`, import.meta.url).href;
+const audioUrl = (filename: string) => `${import.meta.env.BASE_URL}audio/${filename}`;
 
 export const MUSIC_TRACKS: MusicTrack[] = [
   // Category 1: Noise (Synthesized)
