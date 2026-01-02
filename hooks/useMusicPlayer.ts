@@ -66,12 +66,13 @@ export const useMusicPlayer = () => {
     // Changing tracks or starting fresh
     stopAll();
     setCurrentTrack(track);
-    setIsPlaying(true);
 
     if (track.type === 'FILE') {
       const audio = new Audio(track.src);
       audio.loop = true; // IMPORTANT: Auto-restart when ends
       audio.volume = 0.7;
+      audio.preload = 'auto';
+      audio.crossOrigin = 'anonymous';
       audioFileRef.current = audio;
       
       // Handle loading errors for files
@@ -81,10 +82,21 @@ export const useMusicPlayer = () => {
         alert(`Could not play ${track.title}. Is the file present?`);
       };
 
-      audio.play().catch(e => {
-        console.error("Playback failed", e);
-        setIsPlaying(false);
-      });
+      const startPlayback = () => {
+        audio.play().then(() => {
+          setIsPlaying(true);
+        }).catch(e => {
+          console.error("Playback failed", e);
+          setIsPlaying(false);
+        });
+      };
+
+      if (audio.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+        startPlayback();
+      } else {
+        audio.addEventListener('canplaythrough', startPlayback, { once: true });
+        audio.load();
+      }
     } else if (track.type === 'SYNTH') {
       const noiseType = track.src as 'WHITE' | 'PINK' | 'BROWN';
       const result = createNoiseSource(noiseType);
@@ -92,6 +104,7 @@ export const useMusicPlayer = () => {
         synthSourceRef.current = result.source;
         synthGainRef.current = result.gainNode;
         result.source.start();
+        setIsPlaying(true);
       }
     }
   }, [currentTrack, isPlaying, stopAll]);
