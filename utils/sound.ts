@@ -1,5 +1,6 @@
 // Simple synthesizer for app sounds
 let audioContext: AudioContext | null = null;
+let hasUnlocked = false;
 
 export const getContext = () => {
   if (!audioContext) {
@@ -10,6 +11,23 @@ export const getContext = () => {
     audioContext.resume().catch((e) => console.error("Could not resume audio context", e));
   }
   return audioContext;
+};
+
+export const unlockAudioContext = () => {
+  const ctx = getContext();
+  if (!ctx || hasUnlocked) return;
+
+  try {
+    const buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+    source.stop(0);
+    hasUnlocked = true;
+  } catch (e) {
+    console.error("Audio unlock error", e);
+  }
 };
 
 export const playTick = () => {
