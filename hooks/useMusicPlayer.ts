@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { MusicTrack } from '../types';
 import { createNoiseSource } from '../utils/noise';
+import { unlockAudioContext } from '../utils/sound';
 
 export const useMusicPlayer = () => {
   const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
@@ -38,6 +39,7 @@ export const useMusicPlayer = () => {
   }, []);
 
   const playTrack = useCallback((track: MusicTrack) => {
+    unlockAudioContext();
     // If clicking the same track that is already playing, pause it.
     if (currentTrack?.id === track.id && isPlaying) {
       if (track.type === 'FILE' && audioFileRef.current) {
@@ -73,6 +75,9 @@ export const useMusicPlayer = () => {
       audio.volume = 0.7;
       audio.preload = 'auto';
       audio.crossOrigin = 'anonymous';
+      audio.playsInline = true;
+      audio.setAttribute('playsinline', 'true');
+      audio.setAttribute('webkit-playsinline', 'true');
       audioFileRef.current = audio;
       
       // Handle loading errors for files
@@ -82,21 +87,13 @@ export const useMusicPlayer = () => {
         alert(`Could not play ${track.title}. Is the file present?`);
       };
 
-      const startPlayback = () => {
-        audio.play().then(() => {
-          setIsPlaying(true);
-        }).catch(e => {
-          console.error("Playback failed", e);
-          setIsPlaying(false);
-        });
-      };
-
-      if (audio.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-        startPlayback();
-      } else {
-        audio.addEventListener('canplaythrough', startPlayback, { once: true });
-        audio.load();
-      }
+      audio.load();
+      audio.play().then(() => {
+        setIsPlaying(true);
+      }).catch(e => {
+        console.error("Playback failed", e);
+        setIsPlaying(false);
+      });
     } else if (track.type === 'SYNTH') {
       const noiseType = track.src as 'WHITE' | 'PINK' | 'BROWN';
       const result = createNoiseSource(noiseType);
