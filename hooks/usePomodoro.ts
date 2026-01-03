@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TimerMode, TimerSettings } from '../types';
 import { TOTAL_SESSIONS_BEFORE_LONG_BREAK } from '../constants';
-import { playTick, playFocusEnd, playBreakEnd } from '../utils/sound';
+import { playTick, playFocusEnd, playBreakEnd, unlockAudioContext } from '../utils/sound';
 
 export const usePomodoro = (settings: TimerSettings) => {
   const [mode, setMode] = useState<TimerMode>(TimerMode.FOCUS);
@@ -90,6 +90,7 @@ export const usePomodoro = (settings: TimerSettings) => {
   }, [isActive, tick, timeLeft]);
 
   const toggleTimer = () => {
+    unlockAudioContext();
     if (timeLeft === 0) {
       // If pressing start at 0, reset current mode with latest settings
       setTimeLeft(settings[mode]);
