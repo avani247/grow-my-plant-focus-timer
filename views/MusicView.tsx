@@ -48,7 +48,7 @@ const MusicView: React.FC = () => {
     <div className="flex flex-col h-full bg-neo-offwhite">
       
       {/* Category Tabs */}
-      <div className="flex border-b-3 border-black bg-white sticky top-0 z-10">
+      <div className="flex flex-wrap border-b-3 border-black bg-white sticky top-0 z-10">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.id}
@@ -59,7 +59,7 @@ const MusicView: React.FC = () => {
               }
             }}
             className={`
-              flex-1 py-4 font-display font-bold text-xs sm:text-sm uppercase tracking-wider
+              flex-1 min-w-[120px] sm:min-w-0 py-4 font-display font-bold text-xs sm:text-sm uppercase tracking-wider
               border-r-3 border-black last:border-r-0 transition-colors
               ${activeCategory === cat.id ? 'bg-neo-yellow' : 'bg-white hover:bg-gray-100'}
             `}
