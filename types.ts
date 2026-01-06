@@ -29,6 +29,7 @@ export enum MusicCategory {
   NOISE = 'NOISE',
   NATURE = 'NATURE',
   MUSIC = 'MUSIC',
+  YOUTUBE = 'YOUTUBE',
 }
 
 export interface MusicTrack {
@@ -37,4 +38,11 @@ export interface MusicTrack {
   category: MusicCategory;
   src: string; 
   type: 'SYNTH' | 'FILE';
+}
+
+export interface YoutubeTrack {
+  id: string;
+  title: string;
+  videoId: string;
+  thumbnailUrl: string;
 }

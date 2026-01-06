@@ -1,4 +1,4 @@
-import { TimerMode, MusicCategory, MusicTrack, TimerSettings } from './types';
+import { TimerMode, MusicCategory, MusicTrack, TimerSettings, YoutubeTrack } from './types';
 
 // Default Durations in seconds
 export const DEFAULT_SETTINGS: TimerSettings = {
@@ -29,4 +29,13 @@ export const MUSIC_TRACKS: MusicTrack[] = [
   { id: 'lofi', title: 'Lo-Fi', category: MusicCategory.MUSIC, src: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3', type: 'FILE' },
   { id: 'classical', title: 'Piano', category: MusicCategory.MUSIC, src: audioUrl('soft-piano-inspiration-399920.mp3'), type: 'FILE' },
   { id: 'jazz', title: 'Jazz', category: MusicCategory.MUSIC, src: 'https://cdn.pixabay.com/download/audio/2022/01/12/audio_45fdf98d5b.mp3', type: 'FILE' },
+];
+
+export const YOUTUBE_TRACKS: YoutubeTrack[] = [
+  {
+    id: 'deep-focus-chillhop',
+    title: 'Deep Focus Chillhop',
+    videoId: 'Cl6Rz1Uvi2M',
+    thumbnailUrl: 'https://img.youtube.com/vi/Cl6Rz1Uvi2M/hqdefault.jpg',
+  },
 ];
