@@ -33,9 +33,21 @@ export const MUSIC_TRACKS: MusicTrack[] = [
 
 export const YOUTUBE_TRACKS: YoutubeTrack[] = [
   {
-    id: 'deep-focus-chillhop',
-    title: 'Deep Focus Chillhop',
+    id: 'fred-again-npr',
+    title: 'Fred Again - NPR',
+    videoId: '4iQmPv_dTI0',
+    thumbnailUrl: 'https://img.youtube.com/vi/4iQmPv_dTI0/hqdefault.jpg',
+  },
+  {
+    id: 'fred-again-delilah',
+    title: 'Fred Again - Delilah (Pull me out of this)',
     videoId: 'Cl6Rz1Uvi2M',
     thumbnailUrl: 'https://img.youtube.com/vi/Cl6Rz1Uvi2M/hqdefault.jpg',
+  },
+  {
+    id: 'fkj-just-piano',
+    title: 'FKJ - Just Piano',
+    videoId: 'AmmFD2OIs_k',
+    thumbnailUrl: 'https://img.youtube.com/vi/AmmFD2OIs_k/hqdefault.jpg',
   },
 ];
