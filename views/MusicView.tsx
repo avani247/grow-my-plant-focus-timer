@@ -153,6 +153,14 @@ const MusicView: React.FC = () => {
               <div className={`mb-3 transition-transform ${isTrackPlaying ? 'scale-110' : 'group-hover:scale-110'}`}>
                 <MusicIcon category={track.category} />
               </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="p-6 grid grid-cols-2 gap-4 overflow-y-auto pb-20">
+          {filteredTracks.map((track) => {
+            const isCurrent = currentTrack?.id === track.id;
+            const isTrackPlaying = isCurrent && isPlaying;
 
               <span className="font-display font-bold text-xs sm:text-sm uppercase text-center px-2">
                 {track.title}
@@ -181,16 +189,44 @@ const MusicView: React.FC = () => {
                 )}
               </div>
 
-            </button>
-          );
-        })}
+                {/* Status Indicator */}
+                <div className="absolute top-2 right-2">
+                  {isTrackPlaying ? (
+                    <div className="w-3 h-3 bg-black animate-bounce rounded-full"></div>
+                  ) : (
+                    <div className="w-3 h-3 border-2 border-black rounded-full"></div>
+                  )}
+                </div>
+                
+                {/* Play/Pause Overlay */}
+                <div className={`
+                  absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity
+                  ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+                `}>
+                  {isTrackPlaying ? (
+                      // Pause Icon
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                      </svg>
+                  ) : (
+                      // Play Icon
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                          <path d="M8 5v14l11-7z"/>
+                      </svg>
+                  )}
+                </div>
 
-        {filteredTracks.length === 0 && (
-          <div className="col-span-2 text-center py-10 opacity-50 font-display">
-            NO TRACKS FOUND
-          </div>
-        )}
-      </div>
+              </button>
+            );
+          })}
+
+          {filteredTracks.length === 0 && (
+            <div className="col-span-2 text-center py-10 opacity-50 font-display">
+              NO TRACKS FOUND
+            </div>
+          )}
+        </div>
+      )}
 
       {currentTrack && isPlaying && (
         <div className="absolute bottom-4 left-4 right-4 bg-black text-white p-3 border-3 border-white shadow-lg flex items-center justify-between z-20 animate-slide-up">
