@@ -47,7 +47,6 @@ const MusicView: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-neo-offwhite">
       
-      {/* Category Tabs */}
       <div className="flex flex-wrap border-b-3 border-black bg-white sticky top-0 z-10">
         {CATEGORIES.map((cat) => (
           <button
@@ -151,7 +150,6 @@ const MusicView: React.FC = () => {
                 ${isTrackPlaying ? 'bg-neo-green' : 'bg-white'}
               `}
             >
-              {/* Icon */}
               <div className={`mb-3 transition-transform ${isTrackPlaying ? 'scale-110' : 'group-hover:scale-110'}`}>
                 <MusicIcon category={track.category} />
               </div>
@@ -164,23 +162,10 @@ const MusicView: React.FC = () => {
             const isCurrent = currentTrack?.id === track.id;
             const isTrackPlaying = isCurrent && isPlaying;
 
-            return (
-              <button
-                key={track.id}
-                onClick={() => playTrack(track)}
-                className={`
-                  group relative aspect-square flex flex-col items-center justify-center
-                  border-3 border-black shadow-neo transition-all
-                  hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
-                  ${isTrackPlaying ? 'bg-neo-green' : 'bg-white'}
-                `}
-              >
-                {/* Icon */}
-                <div className={`mb-3 transition-transform ${isTrackPlaying ? 'scale-110' : 'group-hover:scale-110'}`}>
-                  <MusicIcon category={track.category} />
-                </div>
+              <span className="font-display font-bold text-xs sm:text-sm uppercase text-center px-2">
+                {track.title}
+              </span>
 
-              {/* Status Indicator */}
               <div className="absolute top-2 right-2">
                 {isTrackPlaying ? (
                   <div className="w-3 h-3 bg-black animate-bounce rounded-full"></div>
@@ -189,7 +174,6 @@ const MusicView: React.FC = () => {
                 )}
               </div>
               
-              {/* Play/Pause Overlay */}
               <div className={`
                 absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity
                 ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
@@ -244,7 +228,6 @@ const MusicView: React.FC = () => {
         </div>
       )}
 
-      {/* Now Playing Footer (Optional, mini player could go here) */}
       {currentTrack && isPlaying && (
         <div className="absolute bottom-4 left-4 right-4 bg-black text-white p-3 border-3 border-white shadow-lg flex items-center justify-between z-20 animate-slide-up">
            <div className="flex items-center gap-2">
