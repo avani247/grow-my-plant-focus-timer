@@ -83,40 +83,51 @@ const MusicView: React.FC = () => {
                 >
                   <div className="relative w-full bg-black aspect-video">
                     {isActive ? (
-                      <iframe
-                        title={track.title}
-                        className="absolute inset-0 h-full w-full"
-                        src={`https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
+                      <>
+                        <iframe
+                          title={track.title}
+                          className="absolute inset-0 h-full w-full"
+                          src={`https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0&playsinline=1`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            stopAll();
+                            setActiveYoutubeId(null);
+                          }}
+                          className="absolute right-2 top-2 rounded-full bg-black/70 p-2 text-white transition hover:bg-black"
+                          aria-label={`Close ${track.title}`}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </button>
+                      </>
                     ) : (
-                      <img
-                        src={track.thumbnailUrl}
-                        alt={track.title}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                      />
+                      <>
+                        <img
+                          src={track.thumbnailUrl}
+                          alt={track.title}
+                          className="absolute inset-0 h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            stopAll();
+                            setActiveYoutubeId(track.videoId);
+                          }}
+                          className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity group-hover:bg-black/30"
+                          aria-label={`Play ${track.title}`}
+                        >
+                          <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                        </button>
+                      </>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        stopAll();
-                        setActiveYoutubeId(isActive ? null : track.videoId);
-                      }}
-                      className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity group-hover:bg-black/30"
-                      aria-label={isActive ? `Pause ${track.title}` : `Play ${track.title}`}
-                    >
-                      {isActive ? (
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
-                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                        </svg>
-                      ) : (
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                      )}
-                    </button>
                   </div>
                   <div className="p-3">
                     <span className="font-display font-bold text-xs sm:text-sm uppercase">
