@@ -195,15 +195,13 @@ const MusicView: React.FC = () => {
                 ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
               `}>
                 {isTrackPlaying ? (
-                    // Pause Icon
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                  </svg>
                 ) : (
-                    // Play Icon
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
                 )}
               </div>
 
