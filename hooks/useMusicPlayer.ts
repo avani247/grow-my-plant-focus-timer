@@ -75,7 +75,6 @@ export const useMusicPlayer = () => {
       audio.volume = 0.7;
       audio.preload = 'auto';
       audio.crossOrigin = 'anonymous';
-      audio.playsInline = true;
       audio.setAttribute('playsinline', 'true');
       audio.setAttribute('webkit-playsinline', 'true');
       audioFileRef.current = audio;
