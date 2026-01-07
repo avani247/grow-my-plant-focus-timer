@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { MusicCategory } from '../types';
-import { MUSIC_TRACKS } from '../constants';
+import { MUSIC_TRACKS, YOUTUBE_TRACKS } from '../constants';
 import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const CATEGORIES = [
   { id: MusicCategory.NOISE, label: 'NOISE' },
   { id: MusicCategory.NATURE, label: 'NATURE' },
   { id: MusicCategory.MUSIC, label: 'MUSIC' },
+  { id: MusicCategory.YOUTUBE, label: 'YOUTUBE' },
 ];
 
 const MusicIcon: React.FC<{ category: MusicCategory }> = ({ category }) => {
@@ -37,21 +38,25 @@ const MusicIcon: React.FC<{ category: MusicCategory }> = ({ category }) => {
 
 const MusicView: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<MusicCategory>(MusicCategory.NOISE);
-  const { currentTrack, isPlaying, playTrack } = useMusicPlayer();
+  const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
+  const { currentTrack, isPlaying, playTrack, stopAll } = useMusicPlayer();
 
   const filteredTracks = MUSIC_TRACKS.filter(track => track.category === activeCategory);
+  const isYoutubeTab = activeCategory === MusicCategory.YOUTUBE;
 
   return (
     <div className="flex flex-col h-full bg-neo-offwhite">
       
       {/* Category Tabs */}
-      <div className="flex border-b-3 border-black bg-white sticky top-0 z-10">
+      <div className="flex flex-wrap border-b-3 border-black bg-white sticky top-0 z-10">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+            onClick={() => {
+              setActiveCategory(cat.id);
+            }}
             className={`
-              flex-1 py-4 font-display font-bold text-xs sm:text-sm uppercase tracking-wider
+              flex-1 min-w-[120px] sm:min-w-0 py-4 font-display font-bold text-xs sm:text-sm uppercase tracking-wider
               border-r-3 border-black last:border-r-0 transition-colors
               ${activeCategory === cat.id ? 'bg-neo-yellow' : 'bg-white hover:bg-gray-100'}
             `}
@@ -61,8 +66,71 @@ const MusicView: React.FC = () => {
         ))}
       </div>
 
-      {/* Track Grid */}
-      <div className="p-6 grid grid-cols-2 gap-4 overflow-y-auto pb-20">
+      <div className={isYoutubeTab ? 'p-6 flex flex-col gap-6 overflow-y-auto pb-20' : 'fixed -left-[9999px] top-0 h-px w-px overflow-hidden'}>
+        <div className="grid grid-cols-1 gap-6">
+          {YOUTUBE_TRACKS.map((track) => {
+            const isActive = activeYoutubeId === track.videoId;
+            return (
+              <div
+                key={track.id}
+                className={`
+                  group relative flex flex-col overflow-hidden border-3 border-black shadow-neo text-left bg-white
+                `}
+              >
+                <div className="relative w-full bg-black aspect-video">
+                  {isActive ? (
+                    <iframe
+                      title={track.title}
+                      className="absolute inset-0 h-full w-full"
+                      src={`https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <img
+                      src={track.thumbnailUrl}
+                      alt={track.title}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopAll();
+                      setActiveYoutubeId(isActive ? null : track.videoId);
+                    }}
+                    className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity group-hover:bg-black/30"
+                    aria-label={isActive ? `Pause ${track.title}` : `Play ${track.title}`}
+                  >
+                    {isActive ? (
+                      <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                      </svg>
+                    ) : (
+                      <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <div className="p-3">
+                  <span className="font-display font-bold text-xs sm:text-sm uppercase">
+                    {track.title}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+          {YOUTUBE_TRACKS.length === 0 && (
+            <div className="col-span-1 text-center py-10 opacity-50 font-display">
+              NO VIDEOS FOUND
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className={isYoutubeTab ? 'fixed -left-[9999px] top-0 h-px w-px overflow-hidden' : 'p-6 grid grid-cols-2 gap-4 overflow-y-auto pb-20'}>
         {filteredTracks.map((track) => {
           const isCurrent = currentTrack?.id === track.id;
           const isTrackPlaying = isCurrent && isPlaying;
@@ -70,7 +138,12 @@ const MusicView: React.FC = () => {
           return (
             <button
               key={track.id}
-              onClick={() => playTrack(track)}
+              onClick={() => {
+                if (activeYoutubeId) {
+                  setActiveYoutubeId(null);
+                }
+                playTrack(track);
+              }}
               className={`
                 group relative aspect-square flex flex-col items-center justify-center
                 border-3 border-black shadow-neo transition-all
@@ -93,7 +166,7 @@ const MusicView: React.FC = () => {
                 {isTrackPlaying ? (
                   <div className="w-3 h-3 bg-black animate-bounce rounded-full"></div>
                 ) : (
-                   <div className="w-3 h-3 border-2 border-black rounded-full"></div>
+                  <div className="w-3 h-3 border-2 border-black rounded-full"></div>
                 )}
               </div>
               
@@ -103,15 +176,13 @@ const MusicView: React.FC = () => {
                 ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
               `}>
                 {isTrackPlaying ? (
-                    // Pause Icon
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                  </svg>
                 ) : (
-                    // Play Icon
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
                 )}
               </div>
 
