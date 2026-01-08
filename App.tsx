@@ -6,12 +6,14 @@ import TimerView from './views/TimerView';
 import MusicView from './views/MusicView';
 import SettingsView from './views/SettingsView';
 import { usePomodoro } from './hooks/usePomodoro';
+import { useMusicPlayer } from './hooks/useMusicPlayer';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.TIMER);
   const [timerSettings, setTimerSettings] = useState<TimerSettings>(DEFAULT_SETTINGS);
   
   const { mode, timeLeft, isActive, sessionCount, toggleTimer, resetTimer } = usePomodoro(timerSettings);
+  const { currentTrack, isPlaying, playTrack, stopAll } = useMusicPlayer();
 
   return (
     // Changed min-h-screen to h-dvh for mobile browser support
@@ -54,7 +56,12 @@ const App: React.FC = () => {
           )}
           
           {currentView === AppView.MUSIC && (
-            <MusicView />
+            <MusicView
+              currentTrack={currentTrack}
+              isPlaying={isPlaying}
+              playTrack={playTrack}
+              stopAll={stopAll}
+            />
           )}
 
           {currentView === AppView.SETTINGS && (

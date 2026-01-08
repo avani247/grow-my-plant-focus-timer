@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { MusicCategory } from '../types';
+import { MusicCategory, MusicTrack } from '../types';
 import { MUSIC_TRACKS, YOUTUBE_TRACKS } from '../constants';
-import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const CATEGORIES = [
   { id: MusicCategory.NOISE, label: 'NOISE' },
@@ -36,10 +35,16 @@ const MusicIcon: React.FC<{ category: MusicCategory }> = ({ category }) => {
   );
 };
 
-const MusicView: React.FC = () => {
+type MusicViewProps = {
+  currentTrack: MusicTrack | null;
+  isPlaying: boolean;
+  playTrack: (track: MusicTrack) => void;
+  stopAll: () => void;
+};
+
+const MusicView: React.FC<MusicViewProps> = ({ currentTrack, isPlaying, playTrack, stopAll }) => {
   const [activeCategory, setActiveCategory] = useState<MusicCategory>(MusicCategory.NOISE);
   const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
-  const { currentTrack, isPlaying, playTrack, stopAll } = useMusicPlayer();
 
   const filteredTracks = MUSIC_TRACKS.filter(track => track.category === activeCategory);
   const isYoutubeTab = activeCategory === MusicCategory.YOUTUBE;
@@ -153,15 +158,6 @@ const MusicView: React.FC = () => {
               <div className={`mb-3 transition-transform ${isTrackPlaying ? 'scale-110' : 'group-hover:scale-110'}`}>
                 <MusicIcon category={track.category} />
               </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="p-6 grid grid-cols-2 gap-4 overflow-y-auto pb-20">
-          {filteredTracks.map((track) => {
-            const isCurrent = currentTrack?.id === track.id;
-            const isTrackPlaying = isCurrent && isPlaying;
-
               <span className="font-display font-bold text-xs sm:text-sm uppercase text-center px-2">
                 {track.title}
               </span>
@@ -173,68 +169,41 @@ const MusicView: React.FC = () => {
                   <div className="w-3 h-3 border-2 border-black rounded-full"></div>
                 )}
               </div>
-              
-              <div className={`
-                absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity
-                ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-              `}>
+
+              <div
+                className={`
+                  absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity
+                  ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+                `}
+              >
                 {isTrackPlaying ? (
                   <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                   </svg>
                 ) : (
                   <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                    <path d="M8 5v14l11-7z"/>
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 )}
               </div>
+            </button>
+          );
+        })}
 
-                {/* Status Indicator */}
-                <div className="absolute top-2 right-2">
-                  {isTrackPlaying ? (
-                    <div className="w-3 h-3 bg-black animate-bounce rounded-full"></div>
-                  ) : (
-                    <div className="w-3 h-3 border-2 border-black rounded-full"></div>
-                  )}
-                </div>
-                
-                {/* Play/Pause Overlay */}
-                <div className={`
-                  absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity
-                  ${isTrackPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-                `}>
-                  {isTrackPlaying ? (
-                      // Pause Icon
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                      </svg>
-                  ) : (
-                      // Play Icon
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="black">
-                          <path d="M8 5v14l11-7z"/>
-                      </svg>
-                  )}
-                </div>
-
-              </button>
-            );
-          })}
-
-          {filteredTracks.length === 0 && (
-            <div className="col-span-2 text-center py-10 opacity-50 font-display">
-              NO TRACKS FOUND
-            </div>
-          )}
-        </div>
-      )}
+        {filteredTracks.length === 0 && (
+          <div className="col-span-2 text-center py-10 opacity-50 font-display">
+            NO TRACKS FOUND
+          </div>
+        )}
+      </div>
 
       {currentTrack && isPlaying && (
         <div className="absolute bottom-4 left-4 right-4 bg-black text-white p-3 border-3 border-white shadow-lg flex items-center justify-between z-20 animate-slide-up">
-           <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-neo-green rounded-full animate-pulse"></div>
-              <span className="font-display text-xs truncate max-w-[150px]">PLAYING: {currentTrack.title}</span>
-           </div>
-           <span className="font-mono text-xs">LOOP ON</span>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-neo-green rounded-full animate-pulse"></div>
+            <span className="font-display text-xs truncate max-w-[150px]">PLAYING: {currentTrack.title}</span>
+          </div>
+          <span className="font-mono text-xs">LOOP ON</span>
         </div>
       )}
 
