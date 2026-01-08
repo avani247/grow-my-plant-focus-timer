@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { MusicCategory } from '../types';
+import { MusicCategory, MusicTrack } from '../types';
 import { MUSIC_TRACKS, YOUTUBE_TRACKS } from '../constants';
-import { useMusicPlayer } from '../hooks/useMusicPlayer';
 
 const CATEGORIES = [
   { id: MusicCategory.NOISE, label: 'NOISE' },
@@ -36,10 +35,16 @@ const MusicIcon: React.FC<{ category: MusicCategory }> = ({ category }) => {
   );
 };
 
-const MusicView: React.FC = () => {
+type MusicViewProps = {
+  currentTrack: MusicTrack | null;
+  isPlaying: boolean;
+  playTrack: (track: MusicTrack) => void;
+  stopAll: () => void;
+};
+
+const MusicView: React.FC<MusicViewProps> = ({ currentTrack, isPlaying, playTrack, stopAll }) => {
   const [activeCategory, setActiveCategory] = useState<MusicCategory>(MusicCategory.NOISE);
   const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
-  const { currentTrack, isPlaying, playTrack, stopAll } = useMusicPlayer();
 
   const filteredTracks = MUSIC_TRACKS.filter(track => track.category === activeCategory);
   const isYoutubeTab = activeCategory === MusicCategory.YOUTUBE;
